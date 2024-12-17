@@ -1,13 +1,12 @@
 @extends('layouts.base_admin.base_auth') @section('judul', 'Halaman Login') @section('content')
 <div class="login-box">
     <div class="login-logo">
-        <a href="#">
-            <b>Admin</b>LTE</a>
+        <h3>Selera Kampung</h3>
     </div>
     <!-- /.login-logo -->
     <div class="card">
         <div class="card-body login-card-body">
-            <p class="login-box-msg">Masuk untuk memulai sesi Anda</p>
+            <p class="login-box-msg">Masuk</p>
 
             <form action="{{ route('login') }}" method="post">
                 @csrf
