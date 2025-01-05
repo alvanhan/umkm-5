@@ -17,7 +17,7 @@ use App\Http\Controllers\Webpage\IndexController;
 |
 */
 
-Route::get('/', [IndexController::class, 'index']);
+Route::get('/', [IndexController::class, 'index'])->name('index');
 
 Auth::routes();
 

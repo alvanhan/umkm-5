@@ -33,24 +33,24 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="./index.html" class="navbar-brand">Selera Kampung</a>
+            <a href="{{route('index')}}" class="navbar-brand">Selera Kampung</a>
         </div>
 
         <nav class="sidebar">
             <div class="navbar-collapse" id="navbar-collapse">
                 <div class="site-header hidden-xs">
-                    <a class="site-brand" href="./index.html" title="">
-                        <img class="img-responsive site-logo" alt="" src="./assets/images/mashup-logo.svg">
+                    <a class="site-brand" href="{{route('index')}}" title="">
+                        <img class="img-responsive site-logo" alt="" src="{{ asset('frontend/assets/images/mashup-logo.svg')}}">
                         Selera Kampung
                     </a>
                     <p>Temukan berbagai macam makanan khas Indonesia</p>
                 </div>
                 <ul class="nav">
-                    <li><a href="#" title="">Home</a></li>
-                    <li><a href="#" title="">About</a></li>
-                    <li><a href="#" title="">Services</a></li>
-                    <li><a href="#" title="">Contact</a></li>
-                    <li><a href="#" title="">Components</a></li>
+                    <li><a href="#" title="">Pilihan Menu</a></li>
+                    <li><a href="#" title="">Tentang Kami</a></li>
+                    <li><a href="#" title="">Kontak Kami</a></li>
+                    {{-- <li><a href="#" title="">Services</a></li>
+                    <li><a href="#" title="">Components</a></li> --}}
 
                 </ul>
 
