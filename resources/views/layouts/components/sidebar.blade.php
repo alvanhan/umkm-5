@@ -7,19 +7,41 @@
             'is_multi' => false,
         ],
         [
-            'text' => 'Kelola Akun',
-            'icon' => 'fas fa-users',
+            'text' => 'Kelola Produk',
+            'icon' => 'fas fa-box',
             'is_multi' => true,
             'href' => [
                 [
-                    'section_text' => 'Data Akun',
+                    'section_text' => 'List Produk',
                     'section_icon' => 'far fa-circle',
-                    'section_href' => route('akun.index'),
+                    'section_href' => '',
                 ],
                 [
-                    'section_text' => 'Tambah Akun',
+                    'section_text' => 'List Kategori Produk',
                     'section_icon' => 'far fa-circle',
-                    'section_href' => route('akun.add'),
+                    'section_href' => '',
+                ],
+                [
+                    'section_text' => 'List Wilayah Khas Produk',
+                    'section_icon' => 'far fa-circle',
+                    'section_href' => '',
+                ],
+            ],
+        ],
+        [
+            'text' => 'Pesanan',
+            'icon' => 'fas fa-shopping-cart',
+            'is_multi' => true,
+            'href' => [
+                [
+                    'section_text' => 'List Pesanan Baru',
+                    'section_icon' => 'far fa-circle',
+                    'section_href' => '',
+                ],
+                [
+                    'section_text' => 'List Pesanan Selesai',
+                    'section_icon' => 'far fa-circle',
+                    'section_href' => '',
                 ],
             ],
         ],
@@ -29,28 +51,15 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="#" class="brand-link">
+    <a href="{{route('home')}}" class="brand-link">
         <span class="brand-text font-weight-light">Selera Kampung</span>
     </a>
 
     <!-- Sidebar -->
     <div class="sidebar">
-        <!-- SidebarSearch Form -->
-        <div class="form-inline mt-2">
-            <div class="input-group" data-widget="sidebar-search">
-                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-sidebar">
-                        <i class="fas fa-search fa-fw"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
-                data-accordion="false">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                 @foreach ($navigation_links as $link)

@@ -1,13 +1,26 @@
-@extends('layouts.base_admin.base_auth') @section('judul', 'Halaman Login') @section('content')
+@extends('layouts.base_admin.base_auth')
+@section('judul', 'Halaman Login')
+@section('content')
+<style>
+    body {
+        background-image: url({{ asset('frontend/assets/images/lampos.jpg') }});
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+    .login-box {
+        background: rgba(255, 255, 255, 0.8); /* Optional: to make the login box slightly transparent */
+        padding: 20px;
+        border-radius: 10px;
+    }
+</style>
 <div class="login-box">
     <div class="login-logo">
         <h3>Selera Kampung</h3>
     </div>
-    <!-- /.login-logo -->
     <div class="card">
         <div class="card-body login-card-body">
             <p class="login-box-msg">Masuk</p>
-
             <form action="{{ route('login') }}" method="post">
                 @csrf
                 <div class="input-group mb-3">
@@ -21,7 +34,6 @@
                         required="required"
                         autocomplete="email"
                         autofocus="autofocus">
-                    {{-- <input type="email" class="form-control" placeholder="Email" autocomplete="off"> --}}
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
@@ -34,7 +46,6 @@
                     @enderror
                 </div>
                 <div class="input-group mb-3">
-                    {{-- <input type="password" class="form-control" placeholder="Password"> --}}
                     <input
                         id="password"
                         type="password"
@@ -55,46 +66,12 @@
                     @enderror
                 </div>
                 <div class="row">
-                    <div class="col-8">
-                        <div class="icheck-primary">
-                            <input type="checkbox" id="remember">
-                            <label for="remember">
-                                Ingat sesi saya
-                            </label>
-                        </div>
-                    </div>
-                    <!-- /.col -->
-                    <div class="col-4">
+                    <div class="col-12">
                         <button type="submit" class="btn btn-primary btn-block">Masuk</button>
                     </div>
-                    <!-- /.col -->
                 </div>
             </form>
-
-            {{-- <div class="social-auth-links text-center mb-3">
-                <p>- OR -</p>
-                <a href="#" class="btn btn-block btn-primary">
-                    <i class="fab fa-facebook mr-2"></i>
-                    Sign in using Facebook
-                </a>
-                <a href="#" class="btn btn-block btn-danger">
-                    <i class="fab fa-google-plus mr-2"></i>
-                    Sign in using Google+
-                </a>
-            </div> --}}
-            <!-- /.social-auth-links -->
-
-            <p class="mb-1">
-                <a href="{{ route('password.request') }}">Lupa password?</a>
-            </p>
-            <p class="mb-0">
-                Belum mempunyai akun?
-                <a href="{{ route('register') }}" class="text-center">Register</a>
-            </p>
         </div>
-        <!-- /.login-card-body -->
     </div>
 </div>
 @endsection
-
-<!-- /.login-box -->
