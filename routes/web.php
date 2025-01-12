@@ -1,11 +1,10 @@
 <?php
 
-use App\Http\Controllers\AkunController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Webpage\IndexController;
 use App\Http\Controllers\Webpage\MenuController;
+use App\Http\Controllers\ProdukController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,4 +28,13 @@ Route::group(['prefix' => 'menu'], function () {
 Auth::routes();
 Route::group(['prefix' => 'dashboard/admin'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
+});
+
+Route::group(['prefix' => 'dashboard/produk', 'middleware' => 'auth'], function () {
+    Route::get('/', [ProdukController::class, 'index'])->name('produk.index');
+    Route::get('/create', [ProdukController::class, 'create'])->name('produk.create');
+    Route::post('/store', [ProdukController::class, 'store'])->name('produk.store');
+    Route::get('/edit/{id}', [ProdukController::class, 'edit'])->name('produk.edit');
+    Route::post('/update/{id}', [ProdukController::class, 'update'])->name('produk.update');
+    Route::post('/destroy/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
 });

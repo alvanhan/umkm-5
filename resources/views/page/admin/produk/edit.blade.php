@@ -1,4 +1,4 @@
-@extends('layouts.base_admin.base_dashboard')@section('judul', 'List ')
+@extends('layouts.base_admin.base_dashboard')@section('judul', 'Edit Produk')
 @section('script_head')
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -9,7 +9,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Data </h1>
+                    <h1>Edit Data</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -38,51 +38,96 @@
                 </div>
             </div>
             <div class="card-body p-0" style="margin: 20px">
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
 
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+                <form action="{{ route('produk.update', $produk->id) }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label for="nama">Nama Produk</label>
+                        <input type="text" class="form-control" id="nama" name="nama" value="{{ $produk->nama }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="harga">Harga</label>
+                        <input type="number" class="form-control" id="harga" name="harga" value="{{ $produk->harga }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="daerah_id">Khas daerah</label>
+                        <select class="form-control" id="daerah_id" name="daerah_id" required>
+                            <option value="" disabled>Pilih daerah</option>
+                            @foreach ($daerah as $w)
+                                <option value="{{ $w->id }}" {{ $produk->daerah_id == $w->id ? 'selected' : '' }}>{{ $w->nama_daerah }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="kategori_id">Kategori Produk</label>
+                        <select class="form-control" id="kategori_id" name="kategori_id" required>
+                            <option value="" disabled>Pilih Kategori</option>
+                            @foreach ($kategori as $k)
+                                <option value="{{ $k->id }}" {{ $produk->kategori_id == $k->id ? 'selected' : '' }}>{{ $k->nama_kategori }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="deskripsi">Deskripsi Produk</label>
+                        <textarea class="form-control" id="deskripsi" name="deskripsi" required>{{ $produk->deskripsi }}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="stok">Stok</label>
+                        <input type="number" class="form-control" id="stok" name="stok" value="{{ $produk->stok }}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gambar">Upload Gambar</label>
+                        <div id="image-input-container">
+                            <div class="input-group mb-3">
+                                <input type="file" class="form-control" name="gambar[]" accept=".jpg,.jpeg,.png">
+                                <div class="input-group-append">
+                                    <button class="btn btn-success add-image-input" type="button">Add More</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            document.querySelector('.add-image-input').addEventListener('click', function() {
+                                var container = document.getElementById('image-input-container');
+                                var newInput = document.createElement('div');
+                                newInput.classList.add('input-group', 'mb-3');
+                                newInput.innerHTML = `
+                                <input type="file" class="form-control" name="gambar[]" accept=".jpg,.jpeg,.png">
+                                <div class="input-group-append">
+                                    <button class="btn btn-danger remove-image-input" type="button">Remove</button>
+                                </div>
+                            `;
+                                container.appendChild(newInput);
+                            });
+
+                            document.getElementById('image-input-container').addEventListener('click', function(e) {
+                                if (e.target && e.target.classList.contains('remove-image-input')) {
+                                    e.target.closest('.input-group').remove();
+                                }
+                            });
+                        });
+                    </script>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </form>
+
+                <!-- /.card-body -->
             </div>
-            <form action="{{ route('produk.update', $produk->id) }}" method="POST">
-                @csrf
-                @method('PUT')
-                <div class="form-group">
-                    <label for="nama_produk">Nama Produk</label>
-                    <input type="text" class="form-control" id="nama_produk" name="nama_produk" value="{{ $produk->nama_produk }}" required>
-                </div>
-                <div class="form-group">
-                    <label for="harga">Harga</label>
-                    <input type="number" class="form-control" id="harga" name="harga" value="{{ $produk->harga }}" required>
-                </div>
-                <div class="form-group">
-                    <label for="khas_wilayah">Khas Wilayah</label>
-                    <select class="form-control" id="khas_wilayah" name="khas_wilayah" required>
-                        <option value="">Pilih Wilayah</option>
-                        @foreach($wilayah as $w)
-                            <option value="{{ $w->id }}" {{ $produk->khas_wilayah == $w->id ? 'selected' : '' }}>{{ $w->nama_wilayah }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="kategori_produk">Kategori Produk</label>
-                    <select class="form-control" id="kategori_produk" name="kategori_produk" required>
-                        <option value="">Pilih Kategori</option>
-                        @foreach($kategori as $k)
-                            <option value="{{ $k->id }}" {{ $produk->kategori_produk == $k->id ? 'selected' : '' }}>{{ $k->nama_kategori }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="deskripsi_produk">Deskripsi Produk</label>
-                    <textarea class="form-control" id="deskripsi_produk" name="deskripsi_produk" required>{{ $produk->deskripsi_produk }}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="quantity">Quantity</label>
-                    <input type="number" class="form-control" id="quantity" name="quantity" value="{{ $produk->quantity }}" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Simpan</button>
-            </form>
-            <!-- /.card-body -->
         </div>
         <!-- /.card -->
     </section>
-    @endsection @section('script_footer')
+@endsection
+@section('script_footer')
     <script></script>
 @endsection

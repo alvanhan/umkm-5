@@ -9,7 +9,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Data </h1>
+                    <h1>Tambah Data</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -38,81 +38,93 @@
                 </div>
             </div>
             <div class="card-body p-0" style="margin: 20px">
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
 
-            </div>
-            <form action="{{ route('produk.store') }}" method="POST">
-                @csrf
-                <div class="form-group">
-                    <label for="nama_produk">Nama Produk</label>
-                    <input type="text" class="form-control" id="nama_produk" name="nama_produk" required>
-                </div>
-                <div class="form-group">
-                    <label for="harga">Harga</label>
-                    <input type="number" class="form-control" id="harga" name="harga" required>
-                </div>
-                <div class="form-group">
-                    <label for="khas_wilayah">Khas Wilayah</label>
-                    <select class="form-control" id="khas_wilayah" name="khas_wilayah" required>
-                        <option value="">Pilih Wilayah</option>
-                        @foreach ($wilayah as $w)
-                            <option value="{{ $w->id }}">{{ $w->nama_wilayah }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="kategori_produk">Kategori Produk</label>
-                    <select class="form-control" id="kategori_produk" name="kategori_produk" required>
-                        <option value="">Pilih Kategori</option>
-                        @foreach ($kategori as $k)
-                            <option value="{{ $k->id }}">{{ $k->nama_kategori }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="deskripsi_produk">Deskripsi Produk</label>
-                    <textarea class="form-control" id="deskripsi_produk" name="deskripsi_produk" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label for="quantity">Quantity</label>
-                    <input type="number" class="form-control" id="quantity" name="quantity" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Simpan</button>
-            </form>
-            <div class="form-group">
-                <label for="images">Upload Images</label>
-                <div id="image-input-container">
-                    <div class="input-group mb-3">
-                        <input type="file" class="form-control" name="images[]" required>
-                        <div class="input-group-append">
-                            <button class="btn btn-success add-image-input" type="button">Add More</button>
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+                <form action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label for="nama">Nama Produk</label>
+                        <input type="text" class="form-control" id="nama" name="nama" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="harga">Harga</label>
+                        <input type="number" class="form-control" id="harga" name="harga" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="daerah_id">Khas daerah</label>
+                        <select class="form-control" id="daerah_id" name="daerah_id" required>
+                            <option value="" selected disabled>Pilih daerah</option>
+                            @foreach ($daerah as $w)
+                                <option value="{{ $w->id }}">{{ $w->nama_daerah }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="kategori_id">Kategori Produk</label>
+                        <select class="form-control" id="kategori_id" name="kategori_id" required>
+                            <option value="" selected disabled>Pilih Kategori</option>
+                            @foreach ($kategori as $k)
+                                <option value="{{ $k->id }}">{{ $k->nama_kategori }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="deskripsi">Deskripsi Produk</label>
+                        <textarea class="form-control" id="deskripsi" name="deskripsi" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="stok">Stok</label>
+                        <input type="number" class="form-control" id="stok" name="stok" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gambar">Upload Gambar</label>
+                        <div id="image-input-container">
+                            <div class="input-group mb-3">
+                                <input type="file" class="form-control" name="gambar[]" accept=".jpg,.jpeg,.png"
+                                    required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-success add-image-input" type="button">Add More</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            document.querySelector('.add-image-input').addEventListener('click', function() {
+                                var container = document.getElementById('image-input-container');
+                                var newInput = document.createElement('div');
+                                newInput.classList.add('input-group', 'mb-3');
+                                newInput.innerHTML = `
+                                <input type="file" class="form-control" name="gambar[]" accept=".jpg,.jpeg,.png" required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-danger remove-image-input" type="button">Remove</button>
+                                </div>
+                            `;
+                                container.appendChild(newInput);
+                            });
+
+                            document.getElementById('image-input-container').addEventListener('click', function(e) {
+                                if (e.target && e.target.classList.contains('remove-image-input')) {
+                                    e.target.closest('.input-group').remove();
+                                }
+                            });
+                        });
+                    </script>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </form>
+
+                <!-- /.card-body -->
             </div>
-
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    document.querySelector('.add-image-input').addEventListener('click', function() {
-                        var container = document.getElementById('image-input-container');
-                        var newInput = document.createElement('div');
-                        newInput.classList.add('input-group', 'mb-3');
-                        newInput.innerHTML = `
-                            <input type="file" class="form-control" name="images[]" required>
-                            <div class="input-group-append">
-                                <button class="btn btn-danger remove-image-input" type="button">Remove</button>
-                            </div>
-                        `;
-                        container.appendChild(newInput);
-                    });
-
-                    document.getElementById('image-input-container').addEventListener('click', function(e) {
-                        if (e.target && e.target.classList.contains('remove-image-input')) {
-                            e.target.closest('.input-group').remove();
-                        }
-                    });
-                });
-            </script>
-            <!-- /.card-body -->
         </div>
         <!-- /.card -->
     </section>

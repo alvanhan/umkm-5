@@ -14,7 +14,7 @@
                 [
                     'section_text' => 'List Produk',
                     'section_icon' => 'far fa-circle',
-                    'section_href' => '',
+                    'section_href' => route('produk.index'),
                 ],
                 [
                     'section_text' => 'List Kategori Produk',
