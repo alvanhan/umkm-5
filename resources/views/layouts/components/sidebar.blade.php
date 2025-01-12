@@ -19,13 +19,13 @@
                 [
                     'section_text' => 'List Kategori Produk',
                     'section_icon' => 'far fa-circle',
-                    'section_href' => '',
+                    'section_href' => route('kategori.index'),
                 ],
                 [
-                    'section_text' => 'List Wilayah Khas Produk',
+                    'section_text' => 'List Daerah Khas Produk',
                     'section_icon' => 'far fa-circle',
-                    'section_href' => '',
-                ],
+                    'section_href' => route('daerah.index'),
+                ]
             ],
         ],
         [

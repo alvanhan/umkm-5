@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\kategori_produk;
 
 class KategoriController extends Controller
 {
@@ -13,7 +14,8 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        //
+        $kategori = kategori_produk::all();
+        return view('page.admin.produk.kategori.index', compact('kategori'));
     }
 
     /**
@@ -23,7 +25,7 @@ class KategoriController extends Controller
      */
     public function create()
     {
-        //
+        return view('page.admin.produk.kategori.create');
     }
 
     /**
@@ -34,18 +36,13 @@ class KategoriController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        $check = kategori_produk::where('nama_kategori', $request->nama_kategori)->first();
+        if ($check) {
+            return redirect()->back()->with('error', 'Kategori sudah ada');
+        }
+        kategori_produk::create($request->all());
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil ditambahkan');
     }
 
     /**
@@ -56,7 +53,8 @@ class KategoriController extends Controller
      */
     public function edit($id)
     {
-        //
+        $kategori = kategori_produk::find($id);
+        return view('page.admin.produk.kategori.edit', compact('kategori'));
     }
 
     /**
@@ -68,7 +66,8 @@ class KategoriController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        kategori_produk::find($id)->update($request->all());
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil diubah');
     }
 
     /**
@@ -79,6 +78,7 @@ class KategoriController extends Controller
      */
     public function destroy($id)
     {
-        //
+        kategori_produk::find($id)->delete();
+        return redirect()->route('kategori.index')->with('success', 'Kategori berhasil dihapus');
     }
 }

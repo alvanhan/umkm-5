@@ -1,4 +1,4 @@
-@extends('layouts.base_admin.base_dashboard')@section('judul', 'List ')
+@extends('layouts.base_admin.base_dashboard')@section('judul', 'Edit data')
 @section('script_head')
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css">
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -38,48 +38,29 @@
                 </div>
             </div>
             <div class="card-body p-0" style="margin: 20px">
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
 
+                @if (session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+                <form action="{{ route('kategori.update', $kategori->id) }}" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="nama_kategori">Nama Kategori</label>
+                        <input type="text" class="form-control" id="nama_kategori" name="nama_kategori"
+                            value="{{ $kategori->nama_kategori }}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </form>
+                <!-- /.card-body -->
             </div>
-            <form action="{{ route('produk.update', $produk->id) }}" method="POST">
-                @csrf
-                @method('PUT')
-                <div class="form-group">
-                    <label for="nama_produk">Nama Produk</label>
-                    <input type="text" class="form-control" id="nama_produk" name="nama_produk" value="{{ $produk->nama_produk }}" required>
-                </div>
-                <div class="form-group">
-                    <label for="harga">Harga</label>
-                    <input type="number" class="form-control" id="harga" name="harga" value="{{ $produk->harga }}" required>
-                </div>
-                <div class="form-group">
-                    <label for="khas_wilayah">Khas Wilayah</label>
-                    <select class="form-control" id="khas_wilayah" name="khas_wilayah" required>
-                        <option value="">Pilih Wilayah</option>
-                        @foreach($wilayah as $w)
-                            <option value="{{ $w->id }}" {{ $produk->khas_wilayah == $w->id ? 'selected' : '' }}>{{ $w->nama_wilayah }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="kategori_produk">Kategori Produk</label>
-                    <select class="form-control" id="kategori_produk" name="kategori_produk" required>
-                        <option value="">Pilih Kategori</option>
-                        @foreach($kategori as $k)
-                            <option value="{{ $k->id }}" {{ $produk->kategori_produk == $k->id ? 'selected' : '' }}>{{ $k->nama_kategori }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="deskripsi_produk">Deskripsi Produk</label>
-                    <textarea class="form-control" id="deskripsi_produk" name="deskripsi_produk" required>{{ $produk->deskripsi_produk }}</textarea>
-                </div>
-                <div class="form-group">
-                    <label for="quantity">Quantity</label>
-                    <input type="number" class="form-control" id="quantity" name="quantity" value="{{ $produk->quantity }}" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Simpan</button>
-            </form>
-            <!-- /.card-body -->
+
         </div>
         <!-- /.card -->
     </section>

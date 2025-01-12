@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\daerah_produk;
 
 class DaerahKhasController extends Controller
 {
@@ -13,7 +14,8 @@ class DaerahKhasController extends Controller
      */
     public function index()
     {
-        //
+        $daerah = daerah_produk::all();
+        return view('page.admin.produk.wilayah.index', compact('daerah'));
     }
 
     /**
@@ -23,7 +25,7 @@ class DaerahKhasController extends Controller
      */
     public function create()
     {
-        //
+        return view('page.admin.produk.wilayah.create');
     }
 
     /**
@@ -34,18 +36,13 @@ class DaerahKhasController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        $check = daerah_produk::where('nama_daerah', $request->nama_daerah)->first();
+        if ($check) {
+            return redirect()->back()->with('error', 'Daerah sudah ada');
+        }
+        daerah_produk::create($request->all());
+        return redirect()->route('daerah.index')->with('success', 'Daerah berhasil ditambahkan');
     }
 
     /**
@@ -56,7 +53,8 @@ class DaerahKhasController extends Controller
      */
     public function edit($id)
     {
-        //
+        $daerah = daerah_produk::find($id);
+        return view('page.admin.produk.wilayah.edit', compact('daerah'));
     }
 
     /**
@@ -68,7 +66,9 @@ class DaerahKhasController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $daerah = daerah_produk::find($id);
+        $daerah->update($request->all());
+        return redirect()->route('daerah.index')->with('success', 'Daerah berhasil diubah');
     }
 
     /**
@@ -79,6 +79,7 @@ class DaerahKhasController extends Controller
      */
     public function destroy($id)
     {
-        //
+        daerah_produk::find($id)->delete();
+        return redirect()->route('daerah.index')->with('success', 'Daerah berhasil dihapus');
     }
 }

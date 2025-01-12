@@ -78,7 +78,6 @@
                                         <label class="form-check-label"
                                             for="flexSwitchCheckChecked{{ $item->id }}">{{ $item->status == 1 ? 'Aktif' : 'Non Aktif' }}</label>
                                     </div>
-
                                     <script>
                                         function updateStatus(id, status) {
                                             window.location.href = `{{ url('dashboard/produk/status') }}/${id}/${status}`;
