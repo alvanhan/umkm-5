@@ -129,4 +129,13 @@ class ProdukController extends Controller
         }
         return redirect()->route('produk.index')->with('success', 'Data berhasil dihapus');
     }
+
+
+    public function status($id, $status)
+    {
+        $produk = produk::find($id);
+        $produk->status = $status;
+        $produk->save();
+        return redirect()->route('produk.index')->with('success', 'Status berhasil diperbarui');
+    }
 }

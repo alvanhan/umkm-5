@@ -73,10 +73,17 @@
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" role="switch"
                                             id="flexSwitchCheckChecked{{ $item->id }}"
-                                            {{ $item->status == 1 ? 'checked' : '' }}>
+                                            {{ $item->status == 1 ? 'checked' : '' }}
+                                            onclick="updateStatus({{ $item->id }}, this.checked ? 1 : 0)">
                                         <label class="form-check-label"
                                             for="flexSwitchCheckChecked{{ $item->id }}">{{ $item->status == 1 ? 'Aktif' : 'Non Aktif' }}</label>
                                     </div>
+
+                                    <script>
+                                        function updateStatus(id, status) {
+                                            window.location.href = `{{ url('dashboard/produk/status') }}/${id}/${status}`;
+                                        }
+                                    </script>
                                 </td>
                                 <td>
                                     <a href="{{ route('produk.edit', $item->id) }}" class="btn btn-primary">Edit</a>

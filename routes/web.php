@@ -37,4 +37,5 @@ Route::group(['prefix' => 'dashboard/produk', 'middleware' => 'auth'], function 
     Route::get('/edit/{id}', [ProdukController::class, 'edit'])->name('produk.edit');
     Route::post('/update/{id}', [ProdukController::class, 'update'])->name('produk.update');
     Route::post('/destroy/{id}', [ProdukController::class, 'destroy'])->name('produk.destroy');
+    Route::get('/status/{id}/{status}', [ProdukController::class, 'status'])->name('produk.status');
 });
