@@ -34,15 +34,10 @@
             'is_multi' => true,
             'href' => [
                 [
-                    'section_text' => 'List Pesanan Baru',
+                    'section_text' => 'List Pesanan',
                     'section_icon' => 'far fa-circle',
                     'section_href' => '',
-                ],
-                [
-                    'section_text' => 'List Pesanan Selesai',
-                    'section_icon' => 'far fa-circle',
-                    'section_href' => '',
-                ],
+                ]
             ],
         ],
     ];

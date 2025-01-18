@@ -21,7 +21,6 @@
             transform: translate(-50%, -50%);
             z-index: 9999;
         }
-
         #main-content {
             display: none;
         }
@@ -30,7 +29,7 @@
 
 <body>
     <div id="loader">
-        <img src="{{ asset('frontend/assets/images/loader.gif') }}" alt="Loading...">
+        <h4 style="color: gray;">Sedang Memuat...</h4>
     </div>
     <div id="main-content">
         <header class="">
@@ -111,7 +110,7 @@
                             </div>
                         </li>
                         <li class="nav-divider"></li>
-                        <a href="#" class="">Keranjang <span id="cart-count"
+                        <a href="{{route('index.checkout')}}" class="">Keranjang <span id="cart-count"
                                 style="background-color: red; color: white; border-radius: 50%; padding: 2px 8px;">0</span></a>
                         <li><a href="#" class="">Lihat Status Pesanan</a></li>
                         <script>

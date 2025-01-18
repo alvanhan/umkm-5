@@ -39,8 +39,10 @@ class IndexController extends Controller
         return view('frontend.ajax.produk', compact('produk'));
     }
 
-    function findProduk($id) {
-        $produk = produk::find($id);
-        return view('frontend.detail', compact('produk'));
+
+    function checkout(Request $request)
+    {
+        $produk = produk::find($request->id);
+        return view('frontend.checkout', compact('produk'));
     }
 }
