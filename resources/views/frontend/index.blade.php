@@ -111,7 +111,33 @@
                             </div>
                         </li>
                         <li class="nav-divider"></li>
+                        <a href="#" class="">Keranjang <span id="cart-count"
+                                style="background-color: red; color: white; border-radius: 50%; padding: 2px 8px;">0</span></a>
                         <li><a href="#" class="">Lihat Status Pesanan</a></li>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function(event) {
+                                function updateCartCount() {
+                                    let cartCount = 0;
+                                    try {
+                                        let storedOrders = localStorage.getItem('pesanan');
+                                        if (storedOrders) {
+                                            let orders = JSON.parse(storedOrders);
+                                            if (Array.isArray(orders)) {
+                                                cartCount = orders.length;
+                                            }
+                                        }
+                                    } catch (error) {
+                                        console.error("Error reading 'pesanan' from localStorage:", error);
+                                    }
+                                    $('#cart-count').text(cartCount);
+                                }
+
+                                updateCartCount();
+                                $(document).on('click', '#btn-pesan', function() {
+                                    updateCartCount();
+                                });
+                            });
+                        </script>
                         <li><a href="#" class="">Tentang Kami</a></li>
                         <li><a href="#" class="">Kontak Kami</a></li>
                     </ul>
@@ -183,6 +209,111 @@
             });
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function(event) {
+            $(document).on('click', '#btn-pesan', function() {
+                var itemId = $(this).attr('name');
+                var availableStock = parseInt($(this).closest('.project-text-inner').find('#tersedia').text().split(': ')[1]);
+                Swal.fire({
+                    title: 'Masukkan jumlah pesanan',
+                    input: 'number',
+                    inputAttributes: {
+                        min: 1,
+                        step: 1
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: 'Pesan',
+                    cancelButtonText: 'Batal',
+                    customClass: {
+                        popup: 'swal2-popup',
+                        confirmButton: 'swal2-confirm'
+                    },
+                    preConfirm: (jumlah) => {
+                        if (!jumlah) {
+                            Swal.showValidationMessage('Jumlah pesanan tidak boleh kosong');
+                        } else if (jumlah > availableStock) {
+                            Swal.showValidationMessage('Pesanan melebihi batas tersedia');
+                        }
+                        return jumlah;
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var order = {
+                            id: itemId,
+                            jumlah: result.value
+                        };
+
+                        let currentOrders = [];
+                        try {
+                            let storedOrders = localStorage.getItem('pesanan');
+                            if (storedOrders) {
+                                currentOrders = JSON.parse(storedOrders);
+                                if (!Array.isArray(currentOrders)) {
+                                    currentOrders = [];
+                                }
+                            }
+                        } catch (error) {
+                            console.error("Error reading 'pesanan' from localStorage:", error);
+                            currentOrders = [];
+                        }
+                        var existingOrder = currentOrders.find(order => order.id === itemId);
+                        if (existingOrder) {
+                            existingOrder.jumlah = (parseInt(existingOrder.jumlah) + parseInt(result.value)).toString();
+                        } else {
+                            currentOrders.push(order);
+                        }
+                        try {
+                            localStorage.setItem('pesanan', JSON.stringify(currentOrders));
+                        } catch (error) {
+                            console.error("Error saving 'pesanan' to localStorage:", error);
+                        }
+
+                        Swal.fire('Pesanan berhasil ditambahkan!', `Jumlah: ${result.value}`, 'success').then(() => {
+                            updateCartCount();
+                        });
+                    }
+                });
+            });
+        });
+
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .swal2-popup {
+                font-size: 1.6rem !important;
+            }
+            .swal2-confirm {
+                background-color: #ff312d !important;
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+
+    <script>
+        function updateCartCount() {
+            let cartCount = 0;
+            try {
+                let storedOrders = localStorage.getItem('pesanan');
+                if (storedOrders) {
+                    let orders = JSON.parse(storedOrders);
+                    if (Array.isArray(orders)) {
+                        cartCount = orders.length;
+                    }
+                }
+            } catch (error) {
+                console.error("Error reading 'pesanan' from localStorage:", error);
+            }
+            $('#cart-count').text(cartCount);
+        }
+
+        updateCartCount();
+        $(document).on('click', '#btn-pesan', function() {
+            updateCartCount();
+        });
+    </script>
+
+
+
     @yield('javascript')
 </body>
 

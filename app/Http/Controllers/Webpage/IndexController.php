@@ -35,7 +35,12 @@ class IndexController extends Controller
                 ->orWhere('deskripsi', 'like', '%' . $request->search . '%');
         }
 
-        $produk = $query->where('status', 1)->get();
+        $produk = $query->where('status', 1)->where('stok', '>', 0)->get();
         return view('frontend.ajax.produk', compact('produk'));
+    }
+
+    function findProduk($id) {
+        $produk = produk::find($id);
+        return view('frontend.detail', compact('produk'));
     }
 }
