@@ -86,7 +86,7 @@ class IndexController extends Controller
 
 
         if ($pemesanan->metode_pembayaran == 'cod') {
-            $pemesanan->status = 'proses';
+            $pemesanan->status_pesanan = 'proses';
             $pemesanan->save();
             return response()->json([
                 'status' => 'success',

@@ -7,6 +7,7 @@ use App\Http\Controllers\Webpage\IndexController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\DaerahKhasController;
+use App\Http\Controllers\PemesananController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,4 +63,9 @@ Route::group(['prefix' => 'dashboard/daerah', 'middleware' => 'auth'], function 
     Route::get('/edit/{id}', [DaerahKhasController::class, 'edit'])->name('daerah.edit');
     Route::post('/update/{id}', [DaerahKhasController::class, 'update'])->name('daerah.update');
     Route::post('/destroy/{id}', [DaerahKhasController::class, 'destroy'])->name('daerah.destroy');
+});
+
+Route::group(['prefix' => 'dashboard/pemesanan', 'middleware' => 'auth'], function () {
+    Route::get('/', [PemesananController::class, 'index'])->name('pemesanan.index');
+    Route::get('/show/{id}', [PemesananController::class, 'show'])->name('pemesanan.show');
 });

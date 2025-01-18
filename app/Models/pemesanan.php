@@ -19,6 +19,13 @@ class pemesanan extends Model
         'total_pembayaran',
         'status_pesanan',
         'pesanan',
-        'callback_payment'
+        'callback_payment',
+        'created_at',
+        'updated_at'
     ];
+
+    public function pemesanan_produk()
+    {
+        return $this->hasMany(pemesanan_produk::class, 'pemesanan_id', 'id');
+    }
 }

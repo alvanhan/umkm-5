@@ -112,7 +112,6 @@
                         <li class="nav-divider"></li>
                         <a href="{{route('index.checkout')}}" class="">Keranjang <span id="cart-count"
                                 style="background-color: red; color: white; border-radius: 50%; padding: 2px 8px;">0</span></a>
-                        <li><a href="#" class="">Lihat Status Pesanan</a></li>
                         <script>
                             document.addEventListener("DOMContentLoaded", function(event) {
                                 function updateCartCount() {

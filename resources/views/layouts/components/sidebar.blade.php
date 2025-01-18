@@ -36,7 +36,7 @@
                 [
                     'section_text' => 'List Pesanan',
                     'section_icon' => 'far fa-circle',
-                    'section_href' => '',
+                    'section_href' => route('pemesanan.index'),
                 ]
             ],
         ],
