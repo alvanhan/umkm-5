@@ -102,6 +102,7 @@
                         <div class="col-6">
                             <p class="lead"><strong>Payment Methods:</strong>
                                 {{ strtoupper($pemesanan->metode_pembayaran) }}</p>
+                            <p class="text-muted -bottom-3">Alamat Pengiriman : {{ $pemesanan->alamat_lengkap }}</p>
                         </div>
                         <!-- /.col -->
                         <div class="col-6">
@@ -122,6 +123,7 @@
 
                     <!-- this row will not appear when printing -->
                     <div class="row no-print">
+
                         <div class="col-12">
                             <button type="button" id="print" class="btn btn-primary float-right"
                                 style="margin-right: 5px;">

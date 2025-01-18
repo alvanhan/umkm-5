@@ -32,4 +32,13 @@ class PemesananController extends Controller
         return view('page.admin.pesanan.show', compact('pemesanan'));
     }
 
+
+    public function status(Request $request, $id)
+    {
+        $pemesanan = pemesanan::find($id);
+        $pemesanan->status_pesanan = $request->status_pesanan;
+        $pemesanan->save();
+        return redirect()->route('pemesanan.index')->with('success', 'Status Pesanan Berhasil Diubah');
+    }
+
 }

@@ -68,4 +68,6 @@ Route::group(['prefix' => 'dashboard/daerah', 'middleware' => 'auth'], function 
 Route::group(['prefix' => 'dashboard/pemesanan', 'middleware' => 'auth'], function () {
     Route::get('/', [PemesananController::class, 'index'])->name('pemesanan.index');
     Route::get('/show/{id}', [PemesananController::class, 'show'])->name('pemesanan.show');
+    Route::get('/show/{id}', [PemesananController::class, 'show'])->name('pemesanan.show');
+    Route::post('/status/{id}', [PemesananController::class, 'status'])->name('pemesanan.status');
 });

@@ -74,6 +74,18 @@
                                     @else
                                         <span class="text-success">{{ $item->status_pesanan }}</span>
                                     @endif
+                                    <br>
+                                    <br>
+                                    <form action="{{ route('pemesanan.status', $item->id) }}" method="POST">
+                                        @csrf
+                                        <select name="status_pesanan" class="form-control" onchange="this.form.submit()">
+                                            <option value="" selected disabled>Ubah Status</option>
+                                            <option value="proses">Proses</option>
+                                            <option value="mengunggu pembayaran">
+                                                Mengunggu Pembayaran</option>
+                                            <option value="selesai">Selesai</option>
+                                        </select>
+                                    </form>
                                 </td>
                                 <td>
                                     @if ($item->metode_pembayaran == 'cod')
