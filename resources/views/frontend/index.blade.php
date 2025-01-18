@@ -136,8 +136,7 @@
                                 });
                             });
                         </script>
-                        <li><a href="#" class="">Tentang Kami</a></li>
-                        <li><a href="#" class="">Kontak Kami</a></li>
+                        <li><a href="{{route('index.tentangKami')}}" class="">Tentang Kami</a></li>
                     </ul>
                     <nav class="nav-footer">
                         <p>© Untitled | Selera Kampung</p>

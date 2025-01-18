@@ -165,4 +165,10 @@ class IndexController extends Controller
             'data' => $id,
         ]);
     }
+
+
+    public function tentangKami()
+    {
+        return view('frontend.tentang');
+    }
 }

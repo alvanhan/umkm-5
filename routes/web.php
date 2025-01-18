@@ -27,7 +27,7 @@ Route::get('/konfirmasi-pesanan', [IndexController::class, 'checkout'])->name('i
 Route::get('/get-produk', [IndexController::class, 'getProdukCheck'])->name('index.getProdukCheck');
 Route::post('/proses-pesanan', [IndexController::class, 'prosesPesanan'])->name('index.prosesPesanan');
 
-
+Route::get('/tetang-kami', [IndexController::class, 'tentangKami'])->name('index.tentangKami');
 
 
 
