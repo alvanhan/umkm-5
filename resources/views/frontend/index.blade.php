@@ -46,34 +46,37 @@
                         <div class="search-box" style="width: 100%;">
                             <form action="" method="GET" class="input-group">
                                 <input type="text" name="query" class="form-control"
-                                    placeholder="Cari makanan disini..." style="width: 100%; outline: none; border: none;">
+                                    placeholder="Cari makanan disini..." style="width: 100%;border: none;">
                             </form>
                         </div>
                     </li>
-
+                    <li class="nav-divider"></li>
+                    <li>
+                        <div class="mt-3" style="width: 100%;">
+                            <select name="category" class="form-control" style="width: 100%;border: none;">
+                                <option value="" selected disabled>Pilih Daerah</option>
+                                @foreach ($daerah as $ditem)
+                                    <option value="{{ $ditem->nama_daerah }}">{{ $ditem->nama_daerah }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </li>
                     <li class="nav-divider"></li>
                     <li>
                         <div class="filter-box mt-3" style="width: 100%;">
-                            <form action="" method="GET" class="input-group">
-                                <select name="category" class="form-control" style="width: 100%; outline: none; border: none;">
-                                    <option value="" selected disabled>Pilih Daerah</option>
-                                    <option value="aceh">Aceh</option>
-                                    <option value="bali">Bali</option>
-                                    <option value="bandung">Bandung</option>
-                                    <option value="batak">Batak</option>
-                                    <option value="betawi">Betawi</option>
-                                    <option value="jawa">Jawa</option>
-                                    <option value="padang">Padang</option>
-                                </select>
-                            </form>
+                            <select name="category" class="form-control" style="width: 100%;border: none;">
+                                <option value="" selected disabled>Kategori</option>
+                                @foreach ($kategori as $kitem)
+                                    <option value="{{ $kitem->nama_kategori }}">{{ $kitem->nama_kategori }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </li>
                     <li class="nav-divider"></li>
+                    <li><a href="#" class="">Lihat Status Pesanan</a></li>
                     <li><a href="#" class="">Tentang Kami</a></li>
                     <li><a href="#" class="">Kontak Kami</a></li>
-
                 </ul>
-
                 <nav class="nav-footer">
                     <p>© Untitled | Selera Kampung</p>
                 </nav>
@@ -81,7 +84,113 @@
         </nav>
     </header>
     <main class="" id="main-collapse">
-        @yield('content')
+        <div class="hero-full-wrapper">
+            <div class="grid">
+                <div class="gutter-sizer"></div>
+                <div class="grid-sizer"></div>
+
+                <div class="grid-item">
+                    <img class="img-responsive" alt="" src="{{ asset('frontend/assets/images/img-01.jpg') }}">
+                    <a href="./project.html" class="project-description">
+                        <div class="project-text-holder">
+                            <div class="project-text-inner">
+                                <h3>Vivamus vestibulum</h3>
+                                <p>Discover more</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="grid-item">
+                    <img class="img-responsive" alt="" src=" {{ asset('frontend/assets/images/img-05.jpg') }}">
+                    <a href="./project.html" class="project-description">
+                        <div class="project-text-holder">
+                            <div class="project-text-inner">
+                                <h3>Vivamus vestibulum</h3>
+                                <p>Discover more</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="grid-item">
+                    <img class="img-responsive" alt=""
+                        src="{{ asset('frontend/assets/images/img-13.jpg') }}">
+                    <a href="./project.html" class="project-description">
+                        <div class="project-text-holder">
+                            <div class="project-text-inner">
+                                <h3>Vivamus vestibulum</h3>
+                                <p>Discover more</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <img class="img-responsive" alt=""
+                        src="{{ asset('frontend/assets/images/img-04.jpg') }}">
+                    <a href="./project.html" class="project-description">
+                        <div class="project-text-holder">
+                            <div class="project-text-inner">
+                                <h3>Vivamus vestibulum</h3>
+                                <p>Discover more</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="grid-item">
+                    <img class="img-responsive" alt=""
+                        src="{{ asset('frontend/assets/images/img-07.jpg') }}">
+                    <a href="./project.html" class="project-description">
+                        <div class="project-text-holder">
+                            <div class="project-text-inner">
+                                <h3>Vivamus vestibulum</h3>
+                                <p>Discover more</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="grid-item">
+                    <img class="img-responsive" alt=""
+                        src="{{ asset('frontend/assets/images/img-11.jpg') }}">
+                    <a href="./project.html" class="project-description">
+                        <div class="project-text-holder">
+                            <div class="project-text-inner">
+                                <h3>Vivamus vestibulum</h3>
+                                <p>Discover more</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="grid-item">
+                    <img class="img-responsive" alt=""
+                        src="{{ asset('frontend/assets/images/img-10.jpg') }}">
+                    <a href="./project.html" class="project-description">
+                        <div class="project-text-holder">
+                            <div class="project-text-inner">
+                                <h3>Vivamus vestibulum</h3>
+                                <p>Discover more</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="grid-item">
+                    <img class="img-responsive" alt=""
+                        src="{{ asset('frontend/assets/images/img-03.jpg') }}">
+                    <a href="./project.html" class="project-description">
+                        <div class="project-text-holder">
+                            <div class="project-text-inner">
+                                <h3>Vivamus vestibulum</h3>
+                                <p>Discover more</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+        </div>
         <script>
             document.addEventListener("DOMContentLoaded", function(event) {
                 masonryBuild();
