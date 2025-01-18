@@ -35,7 +35,7 @@ class IndexController extends Controller
                 ->orWhere('deskripsi', 'like', '%' . $request->search . '%');
         }
 
-        $produk = $query->get();
+        $produk = $query->where('status', 1)->get();
         return view('frontend.ajax.produk', compact('produk'));
     }
 }

@@ -1,7 +1,9 @@
 @foreach ($produk as $item)
 <div class="grid-item">
     <input type="hidden" name="id" value="{{ encrypt($item->id) }}">
-    <img class="img-responsive" alt="{{ $item->nama }}" src="{{ asset($item->gambar[0]) }}">
+    @if(isset($item->gambar[0]))
+        <img class="img-responsive" alt="{{ $item->nama }}" src="{{ asset($item->gambar[0]) }}">
+    @endif
     <a href="#" class="project-description">
         <div class="project-text-holder">
             <h4>{{ @$item->deskripsi }}</h4>
