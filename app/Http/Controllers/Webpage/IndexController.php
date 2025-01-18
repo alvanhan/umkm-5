@@ -141,7 +141,21 @@ class IndexController extends Controller
         $id = $request->external_id;
         $hashids = new Hashids('', 8);
         $id = $hashids->decode($id)[0];
+        if (!$id) {
+            return response()->json([
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'Pemesanan tidak ditemukan',
+            ]);
+        }
         $pemesanan = pemesanan::find($id);
+        if (!$pemesanan) {
+            return response()->json([
+                'status' => 'error',
+                'code' => 404,
+                'message' => 'Pemesanan tidak ditemukan',
+            ]);
+        }
         $pemesanan->status_pesanan = $request->status == 'PAID' ? 'proses' : 'menunggu pembayaran';
         $pemesanan->callback_payment = json_encode($request->all());
         $pemesanan->save();
