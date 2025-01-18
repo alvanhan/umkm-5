@@ -57,6 +57,10 @@
             </div>
             <hr>
             <form class="reveal-content" id="checkout-form">
+                <div class="">
+                    <button id="cancel-order" class="btn btn-danger" style="border-radius: 0;">Batalkan Pesanan</button>
+                </div>
+                <hr>
                 <h4 class="reveal-content">Informasi Pengiriman</h4>
                 <div id="list-pesanan-konfirm"></div>
                 <div class="row">
@@ -82,7 +86,7 @@
                             <label for="alamat_lengkap">Alamat Lengkap</label>
                             <textarea class="form-control" rows="3" name="alamat_lengkap" placeholder="Alamat Lengkap dengan benar.."></textarea>
                         </div>
-                        <button type="submit" id="send-bayar" class="btn btn-primary" style="border-radius: 0;">Pesan
+                        <button type="submit" id="send-bayar" class="btn btn-success" style="border-radius: 0;">Pesan
                             Sekarang</button>
                     </div>
                     <div class="col-md-6">
@@ -210,6 +214,31 @@
                     }
                 });
             }
+        });
+    </script>
+
+    <script>
+        $('#cancel-order').click(function() {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: "Pesanan Anda akan dibatalkan!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, batalkan!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    localStorage.removeItem('pesanan');
+                    Swal.fire(
+                        'Dibatalkan!',
+                        'Pesanan Anda telah dibatalkan.',
+                        'success'
+                    ).then(() => {
+                        window.location.href = '{{ route('menu.index') }}';
+                    });
+                }
+            });
         });
     </script>
     @yield('javascript')
