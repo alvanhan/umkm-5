@@ -23,6 +23,7 @@ Route::get('/', [IndexController::class, 'index'])->name('index');
 Route::get('/produk_list', [IndexController::class, 'getProduk'])->name('index.getProduk');
 Route::get('/', [IndexController::class, 'index'])->name('menu.index');
 Route::get('/konfirmasi-pesanan', [IndexController::class, 'checkout'])->name('index.checkout');
+Route::get('/get-produk', [IndexController::class, 'getProdukCheck'])->name('index.getProdukCheck');
 
 
 

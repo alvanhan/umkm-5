@@ -50,7 +50,15 @@
             </nav>
         </header>
         <main class="" id="main-collapse">
+            <div>
+                <h4 class="reveal-content">Konfirmasi Pesanan Anda</h4>
+                <hr>
+                <div id="list-pesanan-konfirm"></div>
+            </div>
+            <hr>
             <form action="" class="reveal-content" id="checkout-form">
+                <h4 class="reveal-content">Informasi Pengiriman</h4>
+                <div id="list-pesanan-konfirm"></div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -72,7 +80,7 @@
                             <label for="alamat_lengkap">Alamat Lengkap</label>
                             <textarea class="form-control" rows="3" name="alamat_lengkap" placeholder="Alamat Lengkap dengan benar.."></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary" style="border-radius: 0;">Pembayaran</button>
+                        <button type="submit" class="btn btn-primary" style="border-radius: 0;">Pesan Sekarang</button>
                     </div>
                     <div class="col-md-6">
                         <ul class="list-unstyled address-container">
@@ -107,12 +115,54 @@
         });
     </script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript" src="{{ asset('frontend/main.85741bff.js') }}"></script>
     <script>
         $(document).ready(function() {
             if (!localStorage.getItem('pesanan')) {
                 $('#checkout-form').hide();
                 $('#main-collapse').append('<h4 style="color: grey; margin:10%;">Silakan melakukan pesanan terlebih dahulu..</h4>');
+            } else {
+                let pesanan = JSON.parse(localStorage.getItem('pesanan'));
+                let ids = pesanan.map(item => parseInt(item.id));
+                $.ajax({
+                    url: '{{ route("index.getProdukCheck") }}',
+                    type: 'GET',
+                    data: { id: ids },
+                    success: function(response) {
+                        let productHtml = '<div class="row">';
+                        let totalHarga = 0;
+                        response.forEach(function(item) {
+                            let jumlah = pesanan.find(p => p.id == item.id).jumlah;
+                            let hargaTotal = item.harga * jumlah;
+                            totalHarga += hargaTotal;
+                            productHtml += `
+                                <div class="col-md-3">
+                                    <div class="product-item">
+                                        <div class="product-description">
+                                            <h4 class="product-name">${item.nama}</h4>
+                                            <p class="product-price">Rp${item.harga}</p>
+                                            <p class="product-quantity">Jumlah: ${jumlah}</p>
+                                            <p class="product-total">Total: Rp${hargaTotal}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        productHtml += '</div>';
+                        productHtml += `<div class="row"><div class="col-md-12"><h4>Total Pembayaran: Rp${totalHarga}</h4></div></div>`;
+                        $('#list-pesanan-konfirm').append(productHtml);
+                    },
+                    error: function(xhr) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Maaf, page tidak dapat diakses!',
+                        }).then(() => {
+                            window.location.href = '{{ route("index.getProduk") }}';
+                        });
+                    }
+                });
             }
         });
     </script>

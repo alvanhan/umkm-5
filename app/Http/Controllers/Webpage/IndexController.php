@@ -45,4 +45,10 @@ class IndexController extends Controller
         $produk = produk::find($request->id);
         return view('frontend.checkout', compact('produk'));
     }
+
+    function getProdukCheck(Request $request) {
+        $idArray = array_map('intval', $request->id);
+        $produk = produk::whereIn('id', $idArray)->select('id','nama','harga','stok')->get();
+        return response()->json($produk);
+    }
 }
