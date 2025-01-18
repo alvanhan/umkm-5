@@ -14,196 +14,175 @@
     <title>Selera Kampung</title>
     <link href="{{ asset('frontend/main.82cfd66e.css') }}" rel="stylesheet">
     <style>
+        #loader {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+
+        #main-content {
+            display: none;
+        }
     </style>
 </head>
 
 <body>
-    <header class="">
-        <div class="navbar navbar-default visible-xs">
-            <button type="button" class="navbar-toggle collapsed">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a href="{{ route('index') }}" class="navbar-brand">Selera Kampung</a>
-        </div>
+    <div id="loader">
+        <img src="{{ asset('frontend/assets/images/loader.gif') }}" alt="Loading...">
+    </div>
+    <div id="main-content">
+        <header class="">
+            <div class="navbar navbar-default visible-xs">
+                <button type="button" class="navbar-toggle collapsed">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="{{ route('menu.index') }}" class="navbar-brand">Selera Kampung</a>
+            </div>
 
-        <nav class="sidebar navbar-fixed-top">
-            <div class="navbar-collapse" id="navbar-collapse">
-                <div class="site-header hidden-xs">
-                    <a class="site-brand" href="{{ route('index') }}" title="">
-                        <img class="img-responsive site-logo" alt=""
-                            src="{{ asset('frontend/assets/images/mashup-logo.svg') }}">
-                        Selera Kampung
-                    </a>
-                    <p>Temukan berbagai macam makanan khas Indonesia</p>
-                </div>
-                <ul class="nav">
-                    <li><a href="{{ route('menu.index') }}" class="">Pilihan Menu</a></li>
-                    <li class="nav-divider"></li>
-                    <li>
-                        <div class="search-box" style="width: 100%;">
-                            <form action="" method="GET" class="input-group">
-                                <input type="text" name="query" class="form-control"
+            <nav class="sidebar navbar-fixed-top">
+                <div class="navbar-collapse" id="navbar-collapse">
+                    <div class="site-header hidden-xs">
+                        <a class="site-brand" href="{{ route('menu.index') }}" title="">
+                            <img class="img-responsive site-logo" alt=""
+                                src="{{ asset('frontend/assets/images/mashup-logo.svg') }}">
+                            Selera Kampung
+                        </a>
+                        <p>Temukan berbagai macam makanan khas Indonesia</p>
+                    </div>
+                    <ul class="nav">
+                        <li><a href="{{ route('menu.index') }}" class="">Pilihan Menu</a></li>
+                        <li class="nav-divider"></li>
+                        <li>
+                            <div class="search-box" style="width: 100%;">
+                                <input type="text" name="search" id="search" class="form-control"
                                     placeholder="Cari makanan disini..." style="width: 100%;border: none;">
-                            </form>
-                        </div>
-                    </li>
-                    <li class="nav-divider"></li>
-                    <li>
-                        <div class="mt-3" style="width: 100%;">
-                            <select name="category" class="form-control" style="width: 100%;border: none;">
-                                <option value="" selected disabled>Pilih Daerah</option>
-                                @foreach ($daerah as $ditem)
-                                    <option value="{{ $ditem->nama_daerah }}">{{ $ditem->nama_daerah }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </li>
-                    <li class="nav-divider"></li>
-                    <li>
-                        <div class="filter-box mt-3" style="width: 100%;">
-                            <select name="category" class="form-control" style="width: 100%;border: none;">
-                                <option value="" selected disabled>Kategori</option>
-                                @foreach ($kategori as $kitem)
-                                    <option value="{{ $kitem->nama_kategori }}">{{ $kitem->nama_kategori }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </li>
-                    <li class="nav-divider"></li>
-                    <li><a href="#" class="">Lihat Status Pesanan</a></li>
-                    <li><a href="#" class="">Tentang Kami</a></li>
-                    <li><a href="#" class="">Kontak Kami</a></li>
-                </ul>
-                <nav class="nav-footer">
-                    <p>© Untitled | Selera Kampung</p>
-                </nav>
+                            </div>
+                        </li>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function(event) {
+                                $('#search').on('input', function() {
+                                    var query = $(this).val();
+                                    if (query.length >= 3) {
+                                        $.ajax({
+                                            url: "{{ route('index.getProduk') }}",
+                                            method: "GET",
+                                            data: {
+                                                search: query
+                                            },
+                                            success: function(response) {
+                                                $('#produk_list').html(response);
+                                                masonryBuild();
+                                            },
+                                            error: function(xhr) {
+                                                console.error("Error fetching search results:", xhr);
+                                            }
+                                        });
+                                    }
+                                });
+                            });
+                        </script>
+                        <li class="nav-divider"></li>
+                        <li>
+                            <div class="mt-3" style="width: 100%;">
+                                <select name="daerah" class="form-control" style="width: 100%;border: none;"
+                                    onchange="sendQuery()">
+                                    <option value="" selected disabled>Pilih Daerah</option>
+                                    @foreach ($daerah as $ditem)
+                                        <option value="{{ encrypt($ditem->id) }}">{{ $ditem->nama_daerah }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </li>
+                        <li class="nav-divider"></li>
+                        <li>
+                            <div class="filter-box mt-3" style="width: 100%;">
+                                <select name="kategori" class="form-control" style="width: 100%;border: none;"
+                                    onchange="sendQuery()">
+                                    <option value="" selected disabled>Kategori</option>
+                                    @foreach ($kategori as $kitem)
+                                        <option value="{{ encrypt($kitem->id) }}">{{ $kitem->nama_kategori }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </li>
+                        <li class="nav-divider"></li>
+                        <li><a href="#" class="">Lihat Status Pesanan</a></li>
+                        <li><a href="#" class="">Tentang Kami</a></li>
+                        <li><a href="#" class="">Kontak Kami</a></li>
+                    </ul>
+                    <nav class="nav-footer">
+                        <p>© Untitled | Selera Kampung</p>
+                    </nav>
+                </div>
+            </nav>
+        </header>
+        <main class="" id="main-collapse">
+            <div class="hero-full-wrapper">
+                <div class="grid">
+                    <div class="gutter-sizer"></div>
+                    <div class="grid-sizer"></div>
+                    <div id="produk_list"></div>
+                </div>
             </div>
-        </nav>
-    </header>
-    <main class="" id="main-collapse">
-        <div class="hero-full-wrapper">
-            <div class="grid">
-                <div class="gutter-sizer"></div>
-                <div class="grid-sizer"></div>
+            <script>
+                document.addEventListener("DOMContentLoaded", function(event) {
+                    masonryBuild();
+                });
 
-                <div class="grid-item">
-                    <img class="img-responsive" alt="" src="{{ asset('frontend/assets/images/img-01.jpg') }}">
-                    <a href="./project.html" class="project-description">
-                        <div class="project-text-holder">
-                            <div class="project-text-inner">
-                                <h3>Vivamus vestibulum</h3>
-                                <p>Discover more</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="grid-item">
-                    <img class="img-responsive" alt="" src=" {{ asset('frontend/assets/images/img-05.jpg') }}">
-                    <a href="./project.html" class="project-description">
-                        <div class="project-text-holder">
-                            <div class="project-text-inner">
-                                <h3>Vivamus vestibulum</h3>
-                                <p>Discover more</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="grid-item">
-                    <img class="img-responsive" alt=""
-                        src="{{ asset('frontend/assets/images/img-13.jpg') }}">
-                    <a href="./project.html" class="project-description">
-                        <div class="project-text-holder">
-                            <div class="project-text-inner">
-                                <h3>Vivamus vestibulum</h3>
-                                <p>Discover more</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="grid-item">
-                    <img class="img-responsive" alt=""
-                        src="{{ asset('frontend/assets/images/img-04.jpg') }}">
-                    <a href="./project.html" class="project-description">
-                        <div class="project-text-holder">
-                            <div class="project-text-inner">
-                                <h3>Vivamus vestibulum</h3>
-                                <p>Discover more</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="grid-item">
-                    <img class="img-responsive" alt=""
-                        src="{{ asset('frontend/assets/images/img-07.jpg') }}">
-                    <a href="./project.html" class="project-description">
-                        <div class="project-text-holder">
-                            <div class="project-text-inner">
-                                <h3>Vivamus vestibulum</h3>
-                                <p>Discover more</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="grid-item">
-                    <img class="img-responsive" alt=""
-                        src="{{ asset('frontend/assets/images/img-11.jpg') }}">
-                    <a href="./project.html" class="project-description">
-                        <div class="project-text-holder">
-                            <div class="project-text-inner">
-                                <h3>Vivamus vestibulum</h3>
-                                <p>Discover more</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="grid-item">
-                    <img class="img-responsive" alt=""
-                        src="{{ asset('frontend/assets/images/img-10.jpg') }}">
-                    <a href="./project.html" class="project-description">
-                        <div class="project-text-holder">
-                            <div class="project-text-inner">
-                                <h3>Vivamus vestibulum</h3>
-                                <p>Discover more</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <div class="grid-item">
-                    <img class="img-responsive" alt=""
-                        src="{{ asset('frontend/assets/images/img-03.jpg') }}">
-                    <a href="./project.html" class="project-description">
-                        <div class="project-text-holder">
-                            <div class="project-text-inner">
-                                <h3>Vivamus vestibulum</h3>
-                                <p>Discover more</p>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-
-            </div>
-        </div>
-        <script>
-            document.addEventListener("DOMContentLoaded", function(event) {
-                masonryBuild();
-            });
-        </script>
-    </main>
+                function sendQuery() {
+                    var daerah = $('select[name="daerah"]').val();
+                    var kategori = $('select[name="kategori"]').val();
+                    $.ajax({
+                        url: "{{ route('index.getProduk') }}",
+                        method: "GET",
+                        data: {
+                            daerah: daerah,
+                            kategori: kategori
+                        },
+                        success: function(response) {
+                            $('#produk_list').html(response);
+                            masonryBuild();
+                        },
+                        error: function(xhr) {
+                            console.error("Error fetching products:", xhr);
+                        }
+                    });
+                }
+            </script>
+        </main>
+    </div>
     <script>
         document.addEventListener("DOMContentLoaded", function(event) {
             navbarToggleSidebar();
             navActivePage();
         });
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script type="text/javascript" src="{{ asset('frontend/main.85741bff.js') }}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function(event) {
+            $.ajax({
+                url: "{{ route('index.getProduk') }}",
+                method: "GET",
+                success: function(response) {
+                    $('#produk_list').html(response);
+                    $('#loader').hide();
+                    $('#main-content').show();
+                    masonryBuild();
+                },
+                error: function(xhr) {
+                    console.error("Error fetching products:", xhr);
+                    $('#loader').hide();
+                    $('#main-content').show();
+                }
+            });
+        });
+    </script>
     @yield('javascript')
 </body>
 

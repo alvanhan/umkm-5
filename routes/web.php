@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Webpage\MenuController;
+use App\Http\Controllers\Webpage\IndexController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\DaerahKhasController;
@@ -19,10 +19,10 @@ use App\Http\Controllers\DaerahKhasController;
 |
 */
 
-Route::get('/', [MenuController::class, 'menu'])->name('index');
-Route::group(['prefix' => 'menu'], function () {
-    Route::get('/', [MenuController::class, 'menu'])->name('menu.index');
-});
+Route::get('/', [IndexController::class, 'index'])->name('index');
+Route::get('/produk_list', [IndexController::class, 'getProduk'])->name('index.getProduk');
+Route::get('/', [IndexController::class, 'index'])->name('menu.index');
+
 
 
 
