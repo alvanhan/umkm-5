@@ -56,18 +56,20 @@
                 <div id="list-pesanan-konfirm"></div>
             </div>
             <hr>
-            <form action="" class="reveal-content" id="checkout-form">
+            <form class="reveal-content" id="checkout-form">
                 <h4 class="reveal-content">Informasi Pengiriman</h4>
                 <div id="list-pesanan-konfirm"></div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="nama_lengkap">Nama Lengkap</label>
-                            <input type="text" class="form-control" id="nama_lengkap" placeholder="Nama Lengkap">
+                            <input type="text" required class="form-control" id="nama_lengkap"
+                                placeholder="Nama Lengkap">
                         </div>
                         <div class="form-group">
-                            <label for="metode_pembayaran">Email</label>
-                            <input type="text" class="form-control" id="no_telepon" placeholder="No Telepon">
+                            <label for="no_telepon">No Telepon</label>
+                            <input type="number" required min="1" class="form-control" id="no_telepon"
+                                placeholder="08112223344">
                         </div>
                         <div class="form-group">
                             <label for="metode_pembayaran">Metode Pembayaran</label>
@@ -80,7 +82,8 @@
                             <label for="alamat_lengkap">Alamat Lengkap</label>
                             <textarea class="form-control" rows="3" name="alamat_lengkap" placeholder="Alamat Lengkap dengan benar.."></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary" style="border-radius: 0;">Pesan Sekarang</button>
+                        <button type="submit" id="send-bayar" class="btn btn-primary" style="border-radius: 0;">Pesan
+                            Sekarang</button>
                     </div>
                     <div class="col-md-6">
                         <ul class="list-unstyled address-container">
@@ -118,17 +121,59 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript" src="{{ asset('frontend/main.85741bff.js') }}"></script>
     <script>
+        $('#send-bayar').click(function(e) {
+            e.preventDefault();
+            let pesanan = JSON.parse(localStorage.getItem('pesanan'));
+            let pesananData = pesanan.map(item => ({
+                id: parseInt(item.id),
+                jumlah: parseInt(item.jumlah)
+            }));
+            $.ajax({
+                url: '{{ route('index.prosesPesanan') }}',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    pesanan: pesananData,
+                    nama_lengkap: $('#nama_lengkap').val(),
+                    no_telepon: $('#no_telepon').val(),
+                    metode_pembayaran: $('#metode_pembayaran').val(),
+                    alamat_lengkap: $('textarea[name="alamat_lengkap"]').val()
+                },
+                success: function(response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Pemesanan Berhasil',
+                        text: 'Pemesanan Anda telah berhasil diproses!',
+                    }).then(() => {
+                        localStorage.removeItem('pesanan');
+                        window.location.href = response.data;
+                    });
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Terjadi kesalahan saat memproses pesanan Anda!',
+                    });
+                }
+            });
+        });
+    </script>
+    <script>
         $(document).ready(function() {
             if (!localStorage.getItem('pesanan')) {
                 $('#checkout-form').hide();
-                $('#main-collapse').append('<h4 style="color: grey; margin:10%;">Silakan melakukan pesanan terlebih dahulu..</h4>');
+                $('#main-collapse').append(
+                    '<h4 style="color: grey; margin:10%;">Silakan melakukan pesanan terlebih dahulu..</h4>');
             } else {
                 let pesanan = JSON.parse(localStorage.getItem('pesanan'));
                 let ids = pesanan.map(item => parseInt(item.id));
                 $.ajax({
-                    url: '{{ route("index.getProdukCheck") }}',
+                    url: '{{ route('index.getProdukCheck') }}',
                     type: 'GET',
-                    data: { id: ids },
+                    data: {
+                        id: ids
+                    },
                     success: function(response) {
                         let productHtml = '<div class="row">';
                         let totalHarga = 0;
@@ -150,7 +195,8 @@
                             `;
                         });
                         productHtml += '</div>';
-                        productHtml += `<div class="row"><div class="col-md-12"><h4>Total Pembayaran: Rp${totalHarga}</h4></div></div>`;
+                        productHtml +=
+                            `<div class="row"><div class="col-md-12"><h4>Total Pembayaran: Rp${totalHarga}</h4></div></div>`;
                         $('#list-pesanan-konfirm').append(productHtml);
                     },
                     error: function(xhr) {
@@ -159,7 +205,7 @@
                             title: 'Oops...',
                             text: 'Maaf, page tidak dapat diakses!',
                         }).then(() => {
-                            window.location.href = '{{ route("index.getProduk") }}';
+                            window.location.href = '{{ route('index.getProduk') }}';
                         });
                     }
                 });
